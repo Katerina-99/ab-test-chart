@@ -1,10 +1,12 @@
+import { normalizeData } from "./utils/normalizeData";
 import "./App.css";
 
 function App() {
+  console.log(normalizeData());
+
   return (
     <>
-      <div>Hello</div>
-      <button>Click me</button>
+      <div>Check console</div>
     </>
   );
 }
