@@ -1,12 +1,11 @@
-import { normalizeData } from "./utils/normalizeData";
+import DashboardPage from "./components/dashboard/DashboardPage";
 import "./App.css";
 
 function App() {
-  console.log(normalizeData());
-
   return (
     <>
       <div>Check console</div>
+      <DashboardPage />
     </>
   );
 }

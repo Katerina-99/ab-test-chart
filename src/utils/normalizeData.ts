@@ -1,5 +1,3 @@
-import rawData from "../data/data.json";
-
 export type DataPoint = {
   date: Date;
   visits: number;
@@ -16,8 +14,8 @@ export type VariationData = {
 // Типы для сырых данных
 type RawEntry = {
   date: string;
-  visits: Record<string, number>;
-  conversions: Record<string, number>;
+  visits: Record<string, number | undefined>;
+  conversions: Record<string, number | undefined>;
 };
 
 type RawVariation = {
@@ -30,9 +28,7 @@ type RawData = {
   data: RawEntry[];
 };
 
-export function normalizeData(): VariationData[] {
-  const raw = rawData as RawData;
-
+export function normalizeData(raw: RawData): { variations: VariationData[] } {
   const variations: VariationData[] = raw.variations.map((v) => ({
     id: v.id ? String(v.id) : "0",
     name: v.name,
@@ -58,5 +54,5 @@ export function normalizeData(): VariationData[] {
       });
     });
   });
-  return variations;
+  return { variations };
 }
