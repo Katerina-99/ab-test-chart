@@ -6,12 +6,19 @@ const DashboardPage = () => {
   const normalized = normalizeData(rawData);
   console.log(normalized);
 
-  const original = normalized.variations.find((v) => v.id === "0");
+  const colors = ["#46464f", "#4142ef", "#ff8346", "#35bdad"];
+
+  const variationsWithColors = normalized.variations.map((v, index) => ({
+    id: v.id,
+    name: v.name,
+    color: colors[index % colors.length],
+    points: v.points,
+  }));
 
   return (
     <div>
       <h2>Conversion Rate — Original</h2>
-      <ConversionRateChart data={original?.points || []} />
+      <ConversionRateChart variations={variationsWithColors} />
     </div>
   );
 };
