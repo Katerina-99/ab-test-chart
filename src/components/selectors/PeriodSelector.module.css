@@ -1,0 +1,56 @@
+.wrapper {
+  position: relative;
+  width: 140px;
+}
+
+.button {
+  width: 100%;
+  padding: 8px 10px;
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.label {
+  white-space: nowrap;
+}
+
+.icon {
+  transition: transform 0.2s ease;
+  opacity: 0.6;
+}
+
+.icon.open {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  width: 100%;
+  top: 38px;
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 6px 0;
+  z-index: 20;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.option:hover {
+  background: #f2f2f2;
+}
