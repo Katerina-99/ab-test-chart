@@ -27,8 +27,6 @@ interface Props {
 }
 
 const ConversionRateChart = ({ variations }: Props) => {
-  console.log(variations);
-
   //1. Берём длину по первой вариации (все имеют одинаковые даты)
   const pointsCount = variations[0]?.points.length ?? 0;
 

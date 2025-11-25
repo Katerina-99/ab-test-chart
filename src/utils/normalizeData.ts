@@ -1,32 +1,4 @@
-export type DataPoint = {
-  date: Date;
-  visits: number;
-  conversions: number;
-  conversionRate: number;
-};
-
-export type VariationData = {
-  id: string;
-  name: string;
-  points: DataPoint[];
-};
-
-// Типы для сырых данных
-type RawEntry = {
-  date: string;
-  visits: Record<string, number | undefined>;
-  conversions: Record<string, number | undefined>;
-};
-
-type RawVariation = {
-  id?: number;
-  name: string;
-};
-
-type RawData = {
-  variations: RawVariation[];
-  data: RawEntry[];
-};
+import type { VariationData, DataPoint, RawData } from "../types/types";
 
 export function normalizeData(raw: RawData): { variations: VariationData[] } {
   const variations: VariationData[] = raw.variations.map((v) => ({

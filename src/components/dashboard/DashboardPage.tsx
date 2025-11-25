@@ -1,10 +1,12 @@
-import ConversionRateChart from "../charts/ConversionRateChart";
-import { normalizeData } from "../../utils/normalizeData";
+import { useState } from "react";
 import rawData from "../../data/data.json";
+import { normalizeData } from "../../utils/normalizeData";
+import { aggregateAllVariationsByWeek } from "../../utils/aggregateByWeek";
+import ConversionRateChart from "../charts/ConversionRateChart";
 import PeriodSelector from "../selectors/PeriodSelector";
 import VariationSelector from "../selectors/VariationSelector";
-import { useState } from "react";
 import styles from "./DashboardPage.module.css";
+import type { VariationWithColor } from "../../types/types";
 
 const DashboardPage = () => {
   const normalized = normalizeData(rawData);
@@ -12,12 +14,14 @@ const DashboardPage = () => {
 
   const colors = ["#46464f", "#4142ef", "#ff8346", "#35bdad"];
 
-  const variationsWithColors = normalized.variations.map((v, index) => ({
-    id: v.id,
-    name: v.name,
-    color: colors[index % colors.length],
-    points: v.points,
-  }));
+  const variationsWithColors: VariationWithColor[] = normalized.variations.map(
+    (v, index) => ({
+      id: v.id,
+      name: v.name,
+      color: colors[index % colors.length],
+      points: v.points,
+    })
+  );
 
   const [period, setPeriod] = useState<"day" | "week">("day");
 
@@ -31,6 +35,11 @@ const DashboardPage = () => {
     selectedVariations.includes(v.id)
   );
 
+  const finalVariations =
+    period === "week"
+      ? aggregateAllVariationsByWeek(filteredVariations)
+      : filteredVariations;
+
   return (
     <div>
       <div className={styles.selectorWrapper}>
@@ -41,7 +50,7 @@ const DashboardPage = () => {
         />
         <PeriodSelector value={period} onChange={setPeriod} />
       </div>
-      <ConversionRateChart variations={filteredVariations} />
+      <ConversionRateChart variations={finalVariations} />
     </div>
   );
 };
