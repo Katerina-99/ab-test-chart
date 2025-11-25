@@ -50,7 +50,7 @@ const DashboardPage = () => {
         />
         <PeriodSelector value={period} onChange={setPeriod} />
       </div>
-      <ConversionRateChart variations={finalVariations} />
+      <ConversionRateChart variations={finalVariations} mode={period} />
     </div>
   );
 };

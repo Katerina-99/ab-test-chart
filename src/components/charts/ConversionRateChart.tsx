@@ -8,6 +8,7 @@ import {
   YAxis,
   ResponsiveContainer,
 } from "recharts";
+import { formatAxisDate, formatTooltipDate } from "../../utils/dateFormatters";
 // import styles from "./ConversionRateChart.module.css";
 
 interface Point {
@@ -24,9 +25,10 @@ interface VariationForChart {
 
 interface Props {
   variations: VariationForChart[];
+  mode: "day" | "week";
 }
 
-const ConversionRateChart = ({ variations }: Props) => {
+const ConversionRateChart = ({ variations, mode }: Props) => {
   //1. Берём длину по первой вариации (все имеют одинаковые даты)
   const pointsCount = variations[0]?.points.length ?? 0;
 
@@ -34,12 +36,7 @@ const ConversionRateChart = ({ variations }: Props) => {
   const chartData = Array.from({ length: pointsCount }).map((_, index) => {
     const date = variations[0].points[index].date;
 
-    const base: any = {
-      label: date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-      }),
-    };
+    const base: any = { date };
 
     variations.forEach((v) => {
       base[v.id] = v.points[index].conversionRate;
@@ -54,16 +51,19 @@ const ConversionRateChart = ({ variations }: Props) => {
     <ResponsiveContainer width="100%" height={300}>
       <LineChart data={chartData}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="label" interval={2} />
+        <XAxis
+          dataKey="date"
+          tickFormatter={(value) => formatAxisDate(new Date(value), mode)}
+        />
         {/* Y ось в процентах */}
         <YAxis tickFormatter={(value) => `${value.toFixed(0)}%`} />
         {/* Tooltip в процентах */}
         <Tooltip
           formatter={(value) => `${Number(value).toFixed(2)}%`}
-          labelFormatter={(label) => `Date: ${label}`}
+          labelFormatter={(value) => formatTooltipDate(new Date(value), mode)}
           cursor={{ strokeDasharray: "3 3" }}
         />
-        <Legend />
+        <Legend align="right" wrapperStyle={{ top: 300 }} />
         {variations.map((v) => (
           <Line
             key={v.id}
