@@ -1,73 +1,60 @@
-# React + TypeScript + Vite
+# A/B Test Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Интерактивная линейная диаграмма для визуализации статистики A/B-тестирования.  
+Проект позволяет анализировать конверсию разных вариаций, переключаться между дневной и недельной агрегацией данных, выбирать отображаемые вариации и менять стиль графиков.
 
-Currently, two official plugins are available:
+**Демо**: https://katerina-99.github.io/ab-test-chart/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[![Скриншот приложения](./src/assets/screenshot.png)](https://katerina-99.github.io/ab-test-chart/)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Функциональность
 
-## Expanding the ESLint configuration
+### Управление отображением
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Переключение агрегации: **Day / Week** (недели начинаются с понедельника)
+- Выбор вариаций (Original, Variation A, B, C…) — можно показывать несколько одновременно
+- Выбор стиля линии: **Line**, **Smooth**, **Area**
+- Полностью кастомные контролы (без нативных `<select>`)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### График
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Отображает **Conversion Rate** для выбранных вариаций
+- Разные цвета для каждой вариации
+- Адаптивный tooltip:
+  - при дневной агрегации — обычная дата
+  - при недельной — диапазон `03 Jan 2025 – 09 Jan 2025`
+- Ось X при недельной агрегации: `03 Jan – 09 Jan`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Агрегация по неделям
+
+- Автоматическая группировка данных
+- Корректный пересчёт Conversion Rate за неделю
+- Понятное форматирование дат
+
+## Используемые технологии
+
+- **React**
+- **TypeScript**
+- **Recharts** для графиков
+- **CSS Modules**
+- Vite
+- GitHub Actions для деплоя
+- GitHub Pages для хостинга
+
+## Как запустить локально
+
+```bash
+# 1. Клонировать репозиторий
+git clone https://github.com/Katerina-99/ab-test-chart.git
+cd ab-test-chart
+
+# 2. Установить зависимости
+npm install
+
+# 3. Запустить dev-сервер
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Откройте http://localhost:5173 (порт может отличаться)
