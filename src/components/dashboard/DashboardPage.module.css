@@ -1,4 +1,10 @@
 .selectorWrapper {
   display: flex;
+  align-items: center;
   gap: 8px;
+  margin-bottom: 30px;
+}
+
+.lineSelector {
+  margin-left: auto;
 }

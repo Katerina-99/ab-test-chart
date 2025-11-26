@@ -2,11 +2,12 @@ import {
   CartesianGrid,
   Legend,
   Line,
-  LineChart,
   Tooltip,
   XAxis,
   YAxis,
   ResponsiveContainer,
+  Area,
+  AreaChart,
 } from "recharts";
 import { formatAxisDate, formatTooltipDate } from "../../utils/dateFormatters";
 // import styles from "./ConversionRateChart.module.css";
@@ -26,9 +27,10 @@ interface VariationForChart {
 interface Props {
   variations: VariationForChart[];
   mode: "day" | "week";
+  lineStyle: "line" | "smooth" | "area";
 }
 
-const ConversionRateChart = ({ variations, mode }: Props) => {
+const ConversionRateChart = ({ variations, mode, lineStyle }: Props) => {
   //1. Берём длину по первой вариации (все имеют одинаковые даты)
   const pointsCount = variations[0]?.points.length ?? 0;
 
@@ -49,11 +51,12 @@ const ConversionRateChart = ({ variations, mode }: Props) => {
 
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <LineChart data={chartData}>
+      <AreaChart data={chartData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="date"
           tickFormatter={(value) => formatAxisDate(new Date(value), mode)}
+          //   interval={2}
         />
         {/* Y ось в процентах */}
         <YAxis tickFormatter={(value) => `${value.toFixed(0)}%`} />
@@ -61,21 +64,43 @@ const ConversionRateChart = ({ variations, mode }: Props) => {
         <Tooltip
           formatter={(value) => `${Number(value).toFixed(2)}%`}
           labelFormatter={(value) => formatTooltipDate(new Date(value), mode)}
-          cursor={{ strokeDasharray: "3 3" }}
+          contentStyle={{ textAlign: "left" }}
+          //   cursor={{ strokeDasharray: "3 3" }}
         />
-        <Legend align="right" wrapperStyle={{ top: 300 }} />
-        {variations.map((v) => (
-          <Line
-            key={v.id}
-            type="monotone"
-            dataKey={v.id}
-            name={v.name}
-            stroke={v.color}
-            strokeWidth={2}
-            dot={false}
-          />
-        ))}
-      </LineChart>
+        <Legend
+          align="right"
+          verticalAlign="bottom"
+          wrapperStyle={{ top: 300 }}
+        />
+        {variations.map((v) => {
+          if (lineStyle === "area") {
+            return (
+              <Area
+                key={v.id}
+                type="monotone"
+                dataKey={v.id}
+                name={v.name}
+                stroke={v.color}
+                fill={v.color}
+                fillOpacity={0.2}
+                strokeWidth={2}
+              />
+            );
+          }
+
+          return (
+            <Line
+              key={v.id}
+              type={lineStyle === "smooth" ? "monotone" : "linear"}
+              dataKey={v.id}
+              name={v.name}
+              stroke={v.color}
+              strokeWidth={2}
+              dot={false}
+            />
+          );
+        })}
+      </AreaChart>
     </ResponsiveContainer>
   );
 };

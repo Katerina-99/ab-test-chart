@@ -5,10 +5,16 @@ import { aggregateAllVariationsByWeek } from "../../utils/aggregateByWeek";
 import ConversionRateChart from "../charts/ConversionRateChart";
 import PeriodSelector from "../selectors/PeriodSelector";
 import VariationSelector from "../selectors/VariationSelector";
-import styles from "./DashboardPage.module.css";
 import type { VariationWithColor } from "../../types/types";
+import LineStyleSelector from "../selectors/LineStyleSelector";
+import styles from "./DashboardPage.module.css";
 
 const DashboardPage = () => {
+  const [period, setPeriod] = useState<"day" | "week">("day");
+  const [lineStyle, setLineStyle] = useState<"line" | "smooth" | "area">(
+    "line"
+  );
+
   const normalized = normalizeData(rawData);
   console.log(normalized);
 
@@ -22,8 +28,6 @@ const DashboardPage = () => {
       points: v.points,
     })
   );
-
-  const [period, setPeriod] = useState<"day" | "week">("day");
 
   // Variation selector — по умолчанию все выбраны
   const allVariationsIds = variationsWithColors.map((v) => v.id);
@@ -49,8 +53,15 @@ const DashboardPage = () => {
           onChange={setSelectedVariations}
         />
         <PeriodSelector value={period} onChange={setPeriod} />
+        <div className={styles.lineSelector}>
+          <LineStyleSelector value={lineStyle} onChange={setLineStyle} />
+        </div>
       </div>
-      <ConversionRateChart variations={finalVariations} mode={period} />
+      <ConversionRateChart
+        variations={finalVariations}
+        mode={period}
+        lineStyle={lineStyle}
+      />
     </div>
   );
 };
