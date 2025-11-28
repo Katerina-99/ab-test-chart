@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://ТВОЙ_ЮЗЕРНЕЙМ.github.io/ab-test-dashboard/",
+  "homepage": "https://katerina-99.github.io/ab-test-chart/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
